@@ -1,4 +1,5 @@
-
+import os 
+GROQ_API=os.getenv("GROQ_API_KEY")
 
 DOCS=[
     'C:/Users/YSI165/Desktop/Scripts/RAG/Docs/retell_caller_agent.md',
