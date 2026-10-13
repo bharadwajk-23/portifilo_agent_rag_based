@@ -1,7 +1,7 @@
 
-/Output
+/output
 
-.pycache
+
 # Environment
 .env
 .env.*

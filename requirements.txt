@@ -7,5 +7,4 @@ langchain_classic
 faiss-cpu
 sentence-transformers
 langchain_huggingface
-env
 python-dotenv

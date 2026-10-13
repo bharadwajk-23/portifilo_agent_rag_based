@@ -1,21 +1,20 @@
+from retrieval import load_retriever
+from answer_generation import gen_ans
 
-from Retreival import load_retriever
-from Answer_generation import gen_ans
+retriever = load_retriever()
 
-
-retriver=load_retriever()
-
-history={}
+chat_history = []
 while True:
-    print("enter exit or stop  to stop")
-    query=input("Enter a question : ")
+    print("enter exit or stop to stop")
+    query = input("Enter a question : ")
 
-    if query=='exit' or query=='stop':
+    if query in ('exit', 'stop'):
         break
-    answer=gen_ans(retriver,query,history)
-    print("Generated Response: \n")
 
+    answer = gen_ans(retriever, query, chat_history[-5:])
+
+    print("Generated Response: \n")
     print(answer['answer'])
-    history[query]=answer['answer']
+    chat_history.append(f"Question:{query}-Answer:{answer['answer']}")
 
     print(" ----------")
