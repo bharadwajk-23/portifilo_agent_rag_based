@@ -8,7 +8,7 @@ from langchain_core.retrievers import BaseRetriever
 from embeddings import get_embeddings
 from pydantic import ConfigDict
 
-from config import INDEX_PATH
+from core.config import INDEX_PATH
 
 K_SECTIONS = 6          # section chunks when a project is identified
 K_SECTIONS_BROAD = 4    # section chunks mixed in when no project is identified

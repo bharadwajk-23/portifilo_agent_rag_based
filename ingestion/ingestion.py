@@ -99,7 +99,7 @@ def summarize_projects(DOCS, cache_path):
         if not entry or entry.get("hash") != digest:
             if llm is None:
                 from langchain_groq import ChatGroq
-                import config  # noqa: F401  (loads .env)
+                import core.config  # noqa: F401  (loads .env)
                 llm = ChatGroq(model="openai/gpt-oss-20b", temperature=0, max_retries=2)
             summary = llm.invoke(SUMMARY_PROMPT.format(doc=text[:MAX_SUMMARY_INPUT])).content.strip()
             entry = cache[path] = {"hash": digest, "summary": summary}

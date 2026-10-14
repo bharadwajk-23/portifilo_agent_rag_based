@@ -2,7 +2,7 @@ import os
 
 from langchain_community.embeddings import FastEmbedEmbeddings
 
-from config import EMBEDDING_MODEL_NAME, EMBEDDING_CACHE_DIR
+from core.config import EMBEDDING_MODEL_NAME, EMBEDDING_CACHE_DIR
 
 
 def get_embeddings():

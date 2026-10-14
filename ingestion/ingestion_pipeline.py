@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from ingestion import chunking, ingestion, summarize_projects, build_catalog
-from config import DOCS, INDEX_PATH
+from core.config import DOCS, INDEX_PATH
 
 SUMMARY_CACHE = os.path.join(os.path.dirname(INDEX_PATH), "project_summaries.json")
 
