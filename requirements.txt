@@ -8,3 +8,5 @@ faiss-cpu
 sentence-transformers
 langchain_huggingface
 python-dotenv
+fastapi
+uvicorn

@@ -6,7 +6,7 @@ import re
 from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
+from embeddings import get_embeddings
 
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 150
@@ -134,7 +134,4 @@ def build_catalog(summaries):
 
 
 def ingestion(all_splits):
-    model_name = "sentence-transformers/all-MiniLM-L6-v2"
-    embeddings = HuggingFaceEmbeddings(model_name=model_name)
-
-    return FAISS.from_documents(all_splits, embeddings)
+    return FAISS.from_documents(all_splits, get_embeddings())

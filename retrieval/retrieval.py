@@ -5,7 +5,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_core.callbacks import CallbackManagerForRetrieverRun
 from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
-from langchain_huggingface import HuggingFaceEmbeddings
+from embeddings import get_embeddings
 from pydantic import ConfigDict
 
 from config import INDEX_PATH
@@ -113,10 +113,7 @@ class RoutedRetriever(BaseRetriever):
 
 
 def load_retriever():
-    model_name = "sentence-transformers/all-MiniLM-L6-v2"
-    embeddings = HuggingFaceEmbeddings(model_name=model_name)
-
-    vector_db = FAISS.load_local(INDEX_PATH, embeddings, allow_dangerous_deserialization=True)
+    vector_db = FAISS.load_local(INDEX_PATH, get_embeddings(), allow_dangerous_deserialization=True)
 
     projects = sorted(
         {d.metadata["project"] for d in vector_db.docstore._dict.values()

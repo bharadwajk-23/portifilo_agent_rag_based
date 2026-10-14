@@ -8,6 +8,9 @@ load_dotenv(BASE_DIR / ".env")
 
 GROQ_API = os.getenv("GROQ_API_KEY")
 
+EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+EMBEDDING_CACHE_DIR = str(BASE_DIR / "models" / "fastembed")
+
 INDEX_PATH = str(BASE_DIR / "output" / "faiss_index")
 
 DOCS = [
