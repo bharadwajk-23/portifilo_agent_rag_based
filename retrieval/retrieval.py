@@ -10,6 +10,18 @@ from pydantic import ConfigDict
 
 from core.config import INDEX_PATH
 
+try:
+    from ragevalkit import step as rk_step
+except ImportError:
+    from contextlib import contextmanager
+
+    @contextmanager
+    def rk_step(name):  # type: ignore[misc]
+        class _Noop:
+            material = None
+            sources = None
+        yield _Noop()
+
 K_SECTIONS = 6          # section chunks when a project is identified
 K_SECTIONS_BROAD = 4    # section chunks mixed in when no project is identified
 HISTORY_WINDOW = 4
@@ -90,16 +102,28 @@ class RoutedRetriever(BaseRetriever):
         return self.vector_db.similarity_search(query, k=k, filter=flt, fetch_k=self.vector_db.index.ntotal)
 
     def retrieve(self, question: str, history: List[str] | None = None) -> List[Document]:
-        route = self.route(question, history)
+        with rk_step("routing") as s:
+            route = self.route(question, history)
+            s.material = (
+                f"scope: {route['scope']}\n"
+                f"projects: {', '.join(route['projects']) or 'none — broad search'}\n"
+                f"routing source: {route['source'] or 'n/a'}\n"
+                f"search query: {route['query']}"
+            )
+
         query, projects = route["query"], set(route["projects"])
         if projects:
             n = len(projects)
-            docs = self._search(query, self.k_for(n), lambda m: m["project"] in projects and m["chunk_type"] == "section")
-            docs += self._search(query, n, lambda m: m["project"] in projects and m["chunk_type"] == "summary")
+            with rk_step("faiss_search") as s:
+                docs = self._search(query, self.k_for(n), lambda m: m["project"] in projects and m["chunk_type"] == "section")
+                docs += self._search(query, n, lambda m: m["project"] in projects and m["chunk_type"] == "summary")
+                s.material = f"project-scoped search: {list(projects)} | sections={self.k_for(n)} + summaries={n} | docs_returned={len(docs)}"
         else:
-            docs = self._search(query, 1, {"chunk_type": "catalog"})
-            docs += self._search(query, len(self.projects), {"chunk_type": "summary"})
-            docs += self._search(query, K_SECTIONS_BROAD, {"chunk_type": "section"})
+            with rk_step("faiss_search") as s:
+                docs = self._search(query, 1, {"chunk_type": "catalog"})
+                docs += self._search(query, len(self.projects), {"chunk_type": "summary"})
+                docs += self._search(query, K_SECTIONS_BROAD, {"chunk_type": "section"})
+                s.material = f"broad search: catalog=1 + summaries={len(self.projects)} + sections={K_SECTIONS_BROAD} | docs_returned={len(docs)}"
         return docs
 
     @staticmethod

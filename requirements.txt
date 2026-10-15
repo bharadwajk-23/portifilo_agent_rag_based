@@ -1,3 +1,7 @@
+# Install ragevalkit from source (not on PyPI yet):
+#   pip install git+https://github.com/devanshmakam-youngsoft/ragevalkit.git
+#   or: pip install -e D:/company-projects/ragevalkit-lib
+ragevalkit>=0.1.3
 fastapi==0.143.0
 uvicorn==0.54.0
 pydantic==2.13.5
