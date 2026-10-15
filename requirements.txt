@@ -8,3 +8,4 @@ faiss-cpu
 sentence-transformers
 langchain_huggingface
 python-dotenv
+git+https://github.com/devanshmakam-youngsoft/ragevalkit.git
