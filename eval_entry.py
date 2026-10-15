@@ -73,9 +73,9 @@ if __name__ == "__main__":
         session_id_fn=lambda chat_id: f"eval-{chat_id}",
 
         # --- judge ---
-        # Use Groq llama-3.3-70b as the LLM evaluator judge.
+        # Use the same model as the RAG pipeline for evaluation.
         # GROQ_API_KEY is read from .env automatically.
-        judge_model="groq/llama-3.3-70b-versatile",
+        judge_model="groq/openai/gpt-oss-20b",
 
         # --- step recording ---
         # "all" records every step's inputs, outputs, material, sources and timing.
@@ -85,6 +85,8 @@ if __name__ == "__main__":
         run_keyword_recall=True,
         run_bm25=True,
         run_semantic_similarity=True,
+        require_login=True,
+        users="dev:dev@123",
 
         # --- answer extraction ---
         # gen_ans() returns {"answer": ..., "context": ...} but chat_service.answer()
