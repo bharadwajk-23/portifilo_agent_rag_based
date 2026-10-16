@@ -20,3 +20,4 @@ venv/
 .DS_Store
 # Local embedding model
 /models
+eval_store.json
